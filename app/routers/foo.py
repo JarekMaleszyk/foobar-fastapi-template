@@ -12,6 +12,23 @@ router = APIRouter(
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.ResponseFooDto)
 def create_foo(foo: schemas.CreateFooDto, db: Session = Depends(get_db), current_user: str = Depends(oauth2.get_current_user)):
+    """
+    Create a new Foo resource.
+
+    Args:
+        foo (schemas.CreateFooDto): Data required to create a new Foo.
+        db (Session): SQLAlchemy database session dependency.
+        current_user (str): The currently authenticated user, retrieved via OAuth2.
+
+    Returns:
+        schemas.ResponseFooDto: The newly created Foo resource.
+
+    Raises:
+        HTTPException: If the creation fails due to database errors or authentication issues.
+
+    Status Codes:
+        201 Created: Successfully created a new Foo resource.
+    """
     new_foo = models.Foo(user_id = current_user.id, **foo.dict())
     db.add(new_foo)
     db.commit()
