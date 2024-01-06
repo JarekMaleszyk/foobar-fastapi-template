@@ -10,8 +10,10 @@ class CreateUserDto(UserBaseDto):
     password: str    
 
 class ResponseUserDto(UserBaseDto):
-    id: int
+    id: int = Field(alias='user_id')
     created_at: datetime
 
     class Config:
-        orm_mode = True
+        # orm_mode = True
+        from_attributes = True
+        populate_by_name = True
