@@ -32,3 +32,20 @@ class UserRole(Base):
 
     user = relationship('User')
     role = relationship('Role')
+
+class Foo(Base):
+    __tablename__ = 'foos'
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    name = Column(String, nullable=False, unique=False) 
+    descritpion = Column(String, nullable=False, unique=False) 
+    user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False) 
+
+    user = relationship('User')
+
+class Bar(Base):
+    __tablename__ = 'bars'	
+
+    id = Column(Integer, primary_key=True, nullable=False)
+    is_active = Column(Boolean, nullable=False, server_default='TRUE')	
+    foo_id = Column(Integer, ForeignKey('foos.id', ondelete='CASCADE'), nullable=False) 
