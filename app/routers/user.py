@@ -22,11 +22,12 @@ def create_user(user: schemas.CreateUserDto, db: Session = Depends(get_db)):
 
 @router.get("/", response_model=List[schemas.ResponseUserDto])
 def search_user(db: Session = Depends(get_db),
-                search: Optional[str] = '',
+                email: Optional[str] = '',
                 limit: int = 10,
                 skip: int = 0,):
-    users = db.query(models.User).filter(models.User.email.contains(search)).order_by(desc(models.User.created_at)).offset(skip).limit(limit).all()
-    if users.count == 0:
+    users = db.query(models.User).filter(models.User.email.contains(email)).order_by(desc(models.User.created_at)).offset(skip).limit(limit).all()
+    print(users)
+    if not users:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'No user was not found.')
     return users
