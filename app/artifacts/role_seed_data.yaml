@@ -1,0 +1,8 @@
+- targer_class: models:Role
+  data:
+    - name: Superuser
+      code: ADM
+    - name: Project manager
+      code: PRM
+    - name: Regular user
+      code: RGU

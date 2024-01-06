@@ -17,3 +17,10 @@ class ResponseUserDto(UserBaseDto):
         # orm_mode = True
         from_attributes = True
         populate_by_name = True
+
+class RoleBaseDto(BaseModel):
+    name: str
+    code: str
+
+class ResponseRoleDto(RoleBaseDto):
+    id: int
