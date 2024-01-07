@@ -20,5 +20,5 @@ app.include_router(role.router)
 
 @app.get("/") 
 def root():
-    return {'message': 'app version 0.0.5'}
+    return {'message': 'app version 0.0.1'}
               
