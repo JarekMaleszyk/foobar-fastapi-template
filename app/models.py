@@ -27,6 +27,7 @@ class UserRole(Base):
     role_id = Column(Integer, ForeignKey('roles.id', ondelete='CASCADE'), nullable=False)  
     date_from = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     date_to = Column(TIMESTAMP(timezone=True), nullable=True)
+    is_active = Column(Boolean, nullable=False, server_default='TRUE')
     created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
     updated_at = Column(TIMESTAMP(timezone=True), nullable=True)
 
