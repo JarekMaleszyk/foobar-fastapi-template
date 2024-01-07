@@ -24,3 +24,26 @@ class RoleBaseDto(BaseModel):
 
 class ResponseRoleDto(RoleBaseDto):
     id: int
+
+class UserRoleBaseDto(BaseModel):
+    user_id: int
+    role_id: int
+
+class CreateUserRoleDto(UserRoleBaseDto):
+    pass
+
+class UpdateUserRoleDto(UserRoleBaseDto):
+    date_from: Optional[datetime] = None
+    date_to: Optional[datetime] = None
+    is_active: Optional[bool] = None
+
+class ResponseUserRoleDto(UserRoleBaseDto):
+    id: int
+    date_from: datetime
+    date_to: datetime
+    is_active: bool
+    created_at: datetime
+    updated_at: datetime   
+
+
+
