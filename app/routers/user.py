@@ -20,7 +20,7 @@ def create_user(user: schemas.CreateUserDto, db: Session = Depends(get_db)):
     db.refresh(new_user)
     return new_user
 
-@router.get("/", response_model=List[schemas.ResponseUserDto])
+@router.get("/", status_code=status.HTTP_200_OK, response_model=List[schemas.ResponseUserDto])
 def search_user(db: Session = Depends(get_db),
                 email: Optional[str] = '',
                 limit: int = 10,
@@ -31,7 +31,7 @@ def search_user(db: Session = Depends(get_db),
                             detail=f'No user was not found.')
     return users
 
-@router.get("/{id}", response_model=schemas.ResponseUserDto)
+@router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ResponseUserDto)
 def get_user(id: int, db: Session = Depends(get_db)):
     user = db.query(models.User).filter(models.User.id == id).first()
     if not user:
