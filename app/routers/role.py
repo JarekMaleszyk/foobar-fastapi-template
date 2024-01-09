@@ -10,7 +10,6 @@ router = APIRouter(
     tags=['Roles']
 )
 
-@router.get("/", status_code=status.HTTP_200_OK, response_model=schemas.ResponseRoleDto)
+@router.get("/", status_code=status.HTTP_200_OK, response_model=List[schemas.ResponseRoleDto]) 
 def get_all(db: Session = Depends(get_db)):
-    roles = db.query(models.Role).all()
-    return roles
+    return db.query(models.Role).all()
