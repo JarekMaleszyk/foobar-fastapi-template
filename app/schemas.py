@@ -40,10 +40,10 @@ class UpdateUserRoleDto(UserRoleBaseDto):
 class ResponseUserRoleDto(UserRoleBaseDto):
     id: int
     date_from: datetime
-    date_to: datetime
+    date_to: Optional[datetime] = None
     is_active: bool
     created_at: datetime
-    updated_at: datetime   
+    updated_at: Optional[datetime] = None   
 
 
 
