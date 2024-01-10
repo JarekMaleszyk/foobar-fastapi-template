@@ -5,6 +5,7 @@ from sqlalchemy import desc, func
 from ..database import get_db
 from typing import List, Optional
 from datetime import date, datetime
+from pydantic import BaseModel
 
 router = APIRouter(
     prefix='/user_roles',
@@ -32,12 +33,12 @@ def create_userrole(data: schemas.CreateUserRoleDto, db: Session = Depends(get_d
     return userrole
 
 @router.patch("/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ResponseUserRoleDto) 
-def update_userrole(id: int, date_to: date, db: Session = Depends(get_db)): 
+def update_userrole(id: int, data: schemas.UpdateUserRoleDto, db: Session = Depends(get_db)): 
     userrole_query = db.query(models.UserRole).filter(models.UserRole.id == id)
     userrole_entity = userrole_query.first()
-    userrole_query.update({models.UserRole.date_to : date_to,
+    userrole_query.update({models.UserRole.date_to : data.date_to,
                            models.UserRole.updated_at : datetime.now()}, synchronize_session=False)
-    if datetime.now() > datetime.combine(date_to, datetime.min.time()):
+    if datetime.now() > datetime.combine(data.date_to, datetime.min.time()):
         userrole_query.update({models.UserRole.is_active : False}, synchronize_session=False)    
     else:
         userrole_query.update({models.UserRole.is_active : True}, synchronize_session=False)   
