@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr, conint, Field
-from datetime import datetime
+from datetime import datetime, date
 from typing import Optional
 
 class UserBaseDto(BaseModel):
@@ -32,11 +32,6 @@ class UserRoleBaseDto(BaseModel):
 class CreateUserRoleDto(UserRoleBaseDto):
     pass
 
-class UpdateUserRoleDto(UserRoleBaseDto):
-    date_from: Optional[datetime] = None
-    date_to: Optional[datetime] = None
-    is_active: Optional[bool] = None
-
 class ResponseUserRoleDto(UserRoleBaseDto):
     id: int
     date_from: datetime
@@ -44,6 +39,7 @@ class ResponseUserRoleDto(UserRoleBaseDto):
     is_active: bool
     created_at: datetime
     updated_at: Optional[datetime] = None   
+
 
 
 
