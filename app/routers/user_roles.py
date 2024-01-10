@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ResponseUserRoleDto) 
-def get_all(id: int, db: Session = Depends(get_db)):
+def get_one(id: int, db: Session = Depends(get_db)):
     roles = db.query(models.UserRole).filter(models.UserRole.id == id).first()
     return roles
 
@@ -45,3 +45,6 @@ def update_userrole(id: int, data: schemas.UpdateUserRoleDto, db: Session = Depe
     db.commit()
     db.refresh(userrole_entity)
     return userrole_entity
+
+#TODO: dodać delete
+#TODO: 
