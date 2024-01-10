@@ -31,10 +31,10 @@ def create_userrole(data: schemas.CreateUserRoleDto, db: Session = Depends(get_d
     db.refresh(userrole)
     return userrole
 
-@router.patch("/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ResponseUserRoleDto) #
-def update_userrole(id: int, date_to: date, db: Session = Depends(get_db)): # data: schemas.UpdateUserRoleDto
+@router.patch("/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ResponseUserRoleDto) 
+def update_userrole(id: int, date_to: date, db: Session = Depends(get_db)): 
     userrole_query = db.query(models.UserRole).filter(models.UserRole.id == id)
-    userrole_enity = userrole_query.first()
+    userrole_entity = userrole_query.first()
     userrole_query.update({models.UserRole.date_to : date_to,
                            models.UserRole.updated_at : datetime.now()}, synchronize_session=False)
     if datetime.now() > datetime.combine(date_to, datetime.min.time()):
@@ -42,5 +42,5 @@ def update_userrole(id: int, date_to: date, db: Session = Depends(get_db)): # da
     else:
         userrole_query.update({models.UserRole.is_active : True}, synchronize_session=False)   
     db.commit()
-    db.refresh(userrole_enity)
-    return userrole_enity
+    db.refresh(userrole_entity)
+    return userrole_entity
