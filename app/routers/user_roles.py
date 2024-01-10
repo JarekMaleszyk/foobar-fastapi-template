@@ -35,7 +35,8 @@ def create_userrole(data: schemas.CreateUserRoleDto, db: Session = Depends(get_d
 def update_userrole(id: int, date_to: date, db: Session = Depends(get_db)): # data: schemas.UpdateUserRoleDto
     userrole_query = db.query(models.UserRole).filter(models.UserRole.id == id)
     userrole_enity = userrole_query.first()
-    userrole_query.update({models.UserRole.date_to : date_to}, synchronize_session=False)
+    userrole_query.update({models.UserRole.date_to : date_to,
+                           models.UserRole.updated_at : datetime.now()}, synchronize_session=False)
     if datetime.now() > datetime.combine(date_to, datetime.min.time()):
         userrole_query.update({models.UserRole.is_active : False}, synchronize_session=False)    
     else:
