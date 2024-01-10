@@ -32,6 +32,9 @@ class UserRoleBaseDto(BaseModel):
 class CreateUserRoleDto(UserRoleBaseDto):
     pass
 
+class UpdateUserRoleDto(BaseModel):
+    date_to: date | None = None
+
 class ResponseUserRoleDto(UserRoleBaseDto):
     id: int
     date_from: datetime
