@@ -22,6 +22,5 @@ def create_userrole(data: schemas.CreateUserRoleDto, db: Session = Depends(get_d
     userrole.role_id = data.role_id
     db.add(userrole)
     db.commit()
-    #TODO: dodać unikalność wpisu w bazie o tym samym user_id i role_id
     db.refresh(userrole)
     return userrole
