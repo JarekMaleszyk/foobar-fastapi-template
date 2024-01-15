@@ -1,5 +1,5 @@
 from .. import models, schemas
-from fastapi import status, HTTPException, Depends, APIRouter
+from fastapi import status, HTTPException, Depends, APIRouter, Response
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, func
 from ..database import get_db
@@ -13,7 +13,7 @@ router = APIRouter(
 )
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ResponseUserRoleDto) 
-def get_all(id: int, db: Session = Depends(get_db)):
+def get_one(id: int, db: Session = Depends(get_db)):
     roles = db.query(models.UserRole).filter(models.UserRole.id == id).first()
     return roles
 
@@ -45,3 +45,10 @@ def update_userrole(id: int, data: schemas.UpdateUserRoleDto, db: Session = Depe
     db.commit()
     db.refresh(userrole_entity)
     return userrole_entity
+
+@router.delete("/{id}")
+def remove_userrole(id: int, db: Session = Depends(get_db)):
+    userrole_query = db.query(models.UserRole).filter(models.UserRole.id == id)
+    userrole_query.delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT) 
