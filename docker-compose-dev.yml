@@ -10,7 +10,7 @@ services:
       - ./:/usr/src/app:ro #synchronizacja kodu do kontenera w trybie read only
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     environment:
-      - DATABASE_HOSTNAME=postgres
+      - DATABASE_HOSTNAME=localhost
       - DATABASE_PORT=5432
       - DATABASE_NAME=foobar
       - DATABASE_USERNAME=postgres
