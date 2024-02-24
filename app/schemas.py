@@ -43,6 +43,16 @@ class ResponseUserRoleDto(UserRoleBaseDto):
     created_at: datetime
     updated_at: Optional[datetime] = None   
 
+class FooDto(BaseModel):
+    name: str
+    descritpion: str
 
+class CreateFooDto(FooDto):
+    pass
 
+class UpdateFooDto(FooDto):
+    pass
 
+class ResponseFoo(FooDto):
+    id: int
+    user_id: int
