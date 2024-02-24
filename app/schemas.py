@@ -53,6 +53,19 @@ class CreateFooDto(FooDto):
 class UpdateFooDto(FooDto):
     pass
 
-class ResponseFoo(FooDto):
+class ResponseFooDto(FooDto):
     id: int
     user_id: int
+
+class BarDto(BaseModel):
+    is_active: bool
+
+class CreateBarDto(BarDto):
+    pass
+
+class UpdateBarDto(BarDto):
+    pass
+
+class ResponseBarDto(BarDto):
+    id: int
+    foo_id: int
