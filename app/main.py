@@ -22,4 +22,4 @@ app.include_router(user_roles.router)
 @app.get("/") 
 def root():
     return {'version': '0.0.1 - Debian 12'}
-              
+             
