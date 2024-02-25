@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .routers import user, role, user_roles
+from .routers import user, role, user_roles, foo
 
 app = FastAPI()
 
@@ -18,8 +18,9 @@ app.add_middleware(
 app.include_router(user.router)
 app.include_router(role.router)
 app.include_router(user_roles.router)
+app.include_router(foo.router)
 
 @app.get("/") 
 def root():
-    return {'version': '0.0.1 - Debian 12'}
+    return {'version': '0.0.2 - Debian 12'}
              

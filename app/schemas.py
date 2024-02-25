@@ -55,7 +55,7 @@ class UpdateFooDto(FooDto):
 
 class ResponseFooDto(FooDto):
     id: int
-    user_id: int
+    user_id: int 
 
 class BarDto(BaseModel):
     is_active: bool

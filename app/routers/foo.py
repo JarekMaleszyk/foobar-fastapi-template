@@ -11,5 +11,10 @@ router = APIRouter(
 )
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.ResponseFooDto)
-def create_foo():
-    return {"ok"}
+def create_foo(foo: schemas.CreateFooDto, db: Session = Depends(get_db)):
+    new_foo = models.Foo(**foo.dict())
+    new_foo.user_id = 1
+    db.add(new_foo)
+    db.commit()
+    db.refresh(new_foo)
+    return new_foo
