@@ -38,3 +38,16 @@ def get_one(id: int, db: Session = Depends(get_db)):
                             detail=f'Foo with id: {id} was not found.')
     return foo
 
+@router.put("/{id}", status_code=status.HTTP_202_ACCEPTED, response_model=schemas.ResponseFooDto)
+def update_foo(id: int, foo: schemas.UpdateFooDto, db: Session = Depends(get_db)):
+    foo_query = db.query(models.Foo).filter(models.Foo.id == id)
+    foo_entity = foo_query.first()
+    if not foo_entity:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'Foo with id: {id} not found.')
+    foo_query.update({models.Foo.name : foo.name, 
+                      models.Foo.descritpion : foo.descritpion},
+                       synchronize_session=False)
+    db.commit()
+    db.refresh(foo_entity)
+    return foo_entity
