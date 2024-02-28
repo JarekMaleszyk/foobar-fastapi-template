@@ -1,5 +1,5 @@
 from .. import models, schemas, utils
-from fastapi import status, HTTPException, Depends, APIRouter
+from fastapi import status, HTTPException, Depends, APIRouter, Response
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, func
 from ..database import get_db
@@ -51,3 +51,13 @@ def update_foo(id: int, foo: schemas.UpdateFooDto, db: Session = Depends(get_db)
     db.commit()
     db.refresh(foo_entity)
     return foo_entity
+
+@router.delete("/{id}")
+def remove_foo(id: int, db: Session = Depends(get_db)):
+    foo = db.query(models.Foo).filter(models.Foo.id == id)
+    if not foo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f'Foo with id: {id} not found.')
+    foo.delete(synchronize_session=False)
+    db.commit()    
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
