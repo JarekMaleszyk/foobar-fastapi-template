@@ -16,6 +16,10 @@ def create_bar(id: int, bar: schemas.CreateBarDto, db: Session = Depends(get_db)
     if not foo:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'Foo with id: {id} was not found.')
+    bar = db.query(models.Bar).filter(models.Bar.foo_id == id).first()
+    if bar:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail=f'Foo with id: {id} has already its own bar with id: {bar.id}.')    
     new_bar = models.Bar(**bar.dict())
     new_bar.foo_id = id
     db.add(new_bar)
