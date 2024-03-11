@@ -38,7 +38,7 @@ def update_bar(id: int, bar: schemas.UpdateBarDto, db: Session = Depends(get_db)
     if not bar_entity:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'Bar with id: {id} not found.')
-    bar_query.update({models.Bar.is_active : bar.is_active}
+    bar_query.update({models.Bar.is_active : bar.is_active},
                        synchronize_session=False)
     db.commit()
     db.refresh(bar_entity)
