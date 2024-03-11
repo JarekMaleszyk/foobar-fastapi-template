@@ -2,6 +2,17 @@ from pydantic import BaseModel, EmailStr, conint, Field
 from datetime import datetime, date
 from typing import Optional
 
+class UserLoginDto(BaseModel):
+    login: str
+    password: str
+
+class TokenDto(BaseModel):
+    access_token: str
+    token_type: str
+
+class DataToken(BaseModel):
+    login: Optional[str] = None
+
 class UserBaseDto(BaseModel):
     login: str
     email: EmailStr
@@ -69,3 +80,4 @@ class UpdateBarDto(BarDto):
 class ResponseBarDto(BarDto):
     id: int
     foo_id: int
+
