@@ -22,10 +22,10 @@ def create_accesss_token(data: dict):
 def verify_access_token(token: str, credentials_exception):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=ALGORITHM)
-        email: str = payload.get("user_email")
-        if email is None:
+        login: str = payload.get("login")
+        if login is None:
             raise credentials_exception
-        token_data = schemas.DataToken(email=email)
+        token_data = schemas.DataToken(login=login)
     except JWTError as e:
         print(e)
         raise credentials_exception
@@ -36,5 +36,5 @@ def get_current_user(token: str = Depends(oauth2_scheme), db: Session = Depends(
                                          detail='Could not validate credentials.',
                                          headers={'WWW-Authenticate': 'Bearer'})
     token = verify_access_token(token, credentials_exception)
-    user = db.query(models.User).filter(models.User.email == token.email).first()
+    user = db.query(models.User).filter(models.User.login == token.login).first()
     return user

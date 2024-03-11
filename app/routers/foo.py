@@ -1,4 +1,4 @@
-from .. import models, schemas, utils
+from .. import models, schemas, oauth2
 from fastapi import status, HTTPException, Depends, APIRouter, Response
 from sqlalchemy.orm import Session
 from sqlalchemy import desc, func
@@ -11,9 +11,8 @@ router = APIRouter(
 )
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.ResponseFooDto)
-def create_foo(foo: schemas.CreateFooDto, db: Session = Depends(get_db)):
-    new_foo = models.Foo(**foo.dict())
-    new_foo.user_id = 1
+def create_foo(foo: schemas.CreateFooDto, db: Session = Depends(get_db), current_user: str = Depends(oauth2.get_current_user)):
+    new_foo = models.Foo(user_id = current_user.id, **foo.dict())
     db.add(new_foo)
     db.commit()
     db.refresh(new_foo)
