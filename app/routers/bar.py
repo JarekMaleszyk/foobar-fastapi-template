@@ -12,7 +12,6 @@ router = APIRouter(
 
 @router.post("/{id}", status_code=status.HTTP_201_CREATED, response_model=schemas.ResponseBarDto)
 def create_bar(id: int, bar: schemas.CreateBarDto, db: Session = Depends(get_db)):
-    # print(f'INPUT =>>>>>>>>>>> {bar.is_active}')
     foo = db.query(models.Foo).filter(models.Foo.id == id).first()
     if not foo:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
