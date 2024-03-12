@@ -22,7 +22,7 @@ app.include_router(user_roles.router)
 app.include_router(foo.router)
 app.include_router(bar.router)
 
-@app.get("/") 
+@app.get('/') 
 def root():
     return {'version': '0.0.2 - Debian 12'}
              
