@@ -11,7 +11,7 @@ class User(Base):
     email = Column(String, nullable=False, unique=True)
     login = Column(String, nullable=False, unique=True)
     password = Column(String, nullable=False)
-    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('CURRENT_TIMESTAMP'))
 
 class Role(Base):
     __tablename__ = 'roles'
@@ -25,10 +25,10 @@ class UserRole(Base):
     id = Column(Integer, primary_key=True, nullable=False)
     user_id = Column(Integer, ForeignKey('users.id', ondelete='CASCADE'), nullable=False)  
     role_id = Column(Integer, ForeignKey('roles.id', ondelete='CASCADE'), nullable=False)  
-    date_from = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    date_from = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('CURRENT_TIMESTAMP'))
     date_to = Column(TIMESTAMP(timezone=True), nullable=True)
     is_active = Column(Boolean, nullable=False, server_default='TRUE')
-    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('now()'))
+    created_at = Column(TIMESTAMP(timezone=True), nullable=False, server_default=text('CURRENT_TIMESTAMP'))
     updated_at = Column(TIMESTAMP(timezone=True), nullable=True)
 
     user = relationship('User')

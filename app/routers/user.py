@@ -12,6 +12,10 @@ router = APIRouter(
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=schemas.ResponseUserDto)
 def create_user(user: schemas.CreateUserDto, db: Session = Depends(get_db)):
+    user_check = db.query(models.User).filter(models.User.login == user.login or models.User.email == user.email).first()
+    if user_check:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail=f'User with the same login or email already exists in the database.')
     hashed_password = utils.hash(user.password)    #hash password
     user.password = hashed_password
     new_user = models.User(**user.dict())
