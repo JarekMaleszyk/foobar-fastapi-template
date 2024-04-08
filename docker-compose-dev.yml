@@ -3,24 +3,24 @@ services:
   api:
     build: .
     depends_on:
-      - postgres
+      - postgres_db
     ports: 
       - 8000:8000
-    volumes:
-      - ./:/usr/src/app:ro #synchronizacja kodu do kontenera w trybie read only
+    # volumes:
+    #   - ./:/usr/src/app:ro #synchronizacja kodu do kontenera w trybie read only
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
     environment:
-      - DATABASE_HOSTNAME=localhost
+      - DATABASE_HOSTNAME=35.228.114.149
       - DATABASE_PORT=5432
-      - DATABASE_NAME=foobar
+      - DATABASE_NAME=foobar.db
       - DATABASE_USERNAME=postgres
-      - DATABASE_PASSWORD=password123
+      - DATABASE_PASSWORD=0icnxtgrzm
       - SECRET_KEY=dsj7x2odxqctpdclfx28f2zfix2hi8tqdce7qfaqepdclfx287fp7th5btpdclfx28
       - ALGORITHM=HS256
       - ACCESS_TOKEN_EXPIRE_MINUTES=30    
     
-  postgres:
-    image: postgres
+  postgres_db:
+    image: postgres:latest
     environment:
       - POSTGRES_PASSWORD=password123
       - POSTGRES_DB=foobar
