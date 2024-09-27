@@ -5,13 +5,13 @@ from .routers import auth, user, role, user_roles, foo, bar
 
 app = FastAPI()
 
-origins = ['*'] 
+all = ['*'] 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=all,
     allow_credentials=True,
-    allow_methods=origins,
-    allow_headers=origins
+    allow_methods=all,
+    allow_headers=all
 
 )
 
