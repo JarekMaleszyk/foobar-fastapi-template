@@ -25,11 +25,12 @@ def create_user(user: schemas.CreateUserDto, db: Session = Depends(get_db)):
     Raises:
         HTTPException: If a user with the same login or email already exists.
     """
+    # TODO: https://docs.sqlalchemy.org/en/20/core/sqlelement.html - check for the existence of a user in the database
     user_check = db.query(models.User).filter(models.User.login == user.login or models.User.email == user.email).first()
     if user_check:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
                             detail=f'User with the same login or email already exists in the database.')
-    hashed_password = utils.hash(user.password)    #hash password
+    hashed_password = utils.hash(user.password)    # Hash password
     user.password = hashed_password
     new_user = models.User(**user.dict())
     db.add(new_user)
@@ -39,7 +40,7 @@ def create_user(user: schemas.CreateUserDto, db: Session = Depends(get_db)):
 
 @router.get("/", status_code=status.HTTP_200_OK, response_model=List[schemas.ResponseUserDto])
 def search_user(db: Session = Depends(get_db),
-                email: Optional[str] = '',
+                email: Optional[str] = None,
                 limit: int = 10,
                 skip: int = 0):
     """
@@ -57,10 +58,16 @@ def search_user(db: Session = Depends(get_db),
     Raises:
         HTTPException: If no users are found.
     """
-    users = db.query(models.User).filter(models.User.email.contains(email)).order_by(desc(models.User.created_at)).offset(skip).limit(limit).all()
+    query = db.query(models.User)
+    if email:
+        query = query.filter(models.User.email.ilike(f"%{email}%"))
+    users = query.order_by(desc(models.User.created_at)).offset(skip).limit(limit).all()
+    if email:
+        query = query.filter(models.User.email.ilike(f"%{email}%"))
+    users = query.order_by(desc(models.User.created_at)).offset(skip).limit(limit).all()
     if not users:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f'No user was found.')
+                            detail='User was not found.')
     return users
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ResponseUserDto)
@@ -78,7 +85,7 @@ def get_user(id: int, db: Session = Depends(get_db)):
     Raises:
         HTTPException: If the user with the given ID is not found.
     """
-    user = db.query(models.User).filter(models.User.id == id).first()
+    user = db.query(models.User).filter_by(id=id).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'User with id:{id} was not found.')
