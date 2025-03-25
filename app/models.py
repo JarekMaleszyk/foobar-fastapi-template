@@ -15,6 +15,7 @@ class User(Base):
 
 class Role(Base):
     __tablename__ = 'roles'
+    
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(String, nullable=False, unique=True)
     code = Column(String, nullable=False, unique=True)

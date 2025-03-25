@@ -24,5 +24,5 @@ app.include_router(bar.router)
 
 @app.get('/') 
 def root():
-    return {'version': '0.0.2 - Debian 12'}
+    return {'version': '0.0.3 - sqlite'}
              
