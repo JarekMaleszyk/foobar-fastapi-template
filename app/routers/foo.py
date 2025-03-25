@@ -23,7 +23,7 @@ def get_many(search: str,
              limit: int = 10,
              skip: int = 0,
              db: Session = Depends(get_db)):
-    foos = db.query(models.Foo).filter(models.Foo.name.contains(search)).order_by(desc(models.Foo.id)).offset(skip).take(limit).all()
+    foos = db.query(models.Foo).filter(models.Foo.name.contains(search)).order_by(desc(models.Foo.id)).offset(skip).limit(limit).all()
     if not foos:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f'Zero foos were found.')
