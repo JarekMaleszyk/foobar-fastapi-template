@@ -1,14 +1,17 @@
+import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
 from .routers import auth, user, role, user_roles, foo, bar
 
-app = FastAPI()
+app = FastAPI(
+    title="FastAPI Template",
+    description="Template project using python FastAPI framework.",
+    version="0.1.1",
+)
 
-origins = ['*'] 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=['*'],
     allow_credentials=True,
     allow_methods=['*'],
     allow_headers=['*']
@@ -22,7 +25,7 @@ app.include_router(user_roles.router)
 app.include_router(foo.router)
 app.include_router(bar.router)
 
-@app.get('/') 
-def root():
-    return {'version': '0.0.3 - sqlite'}
              
+if __name__ == "__main__":
+    print("Navigate the url: http://localhost:8000/docs for Swagger docs.")
+    uvicorn.run(app="main:app", host="0.0.0.0", port=8000, reload=True, workers=2)
