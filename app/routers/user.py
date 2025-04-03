@@ -25,7 +25,7 @@ def create_user(user: schemas.CreateUserDto, db: Session = Depends(get_db)):
     Raises:
         HTTPException: If a user with the same login or email already exists.
     """
-    # TODO: https://docs.sqlalchemy.org/en/20/core/sqlelement.html - check for the existence of a user in the database
+    # TODO: https://docs.sqlalchemy.org/en/20/core/sqlelement.html - check for the existence of a user in the database  
     user_check = db.query(models.User).filter(models.User.login == user.login or models.User.email == user.email).first()
     if user_check:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
